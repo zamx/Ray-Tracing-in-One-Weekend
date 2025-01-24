@@ -1,3 +1,4 @@
+use crate::data::color::Color;
 use crate::serialization::ppm_image_serializer::PPMImageSerializer;
 use crate::serialization::image_serializer::ImageSerializer;
 use crate::data::image;
@@ -15,11 +16,11 @@ fn fill_image(image: &mut image::Image)
             let g = y as f64 / (image.width - 1) as f64;
             let b = 0.0;
 
-            let ir = (255.99 * r) as u32;
-            let ig = (255.99 * g) as u32;
-            let ib = (255.99 * b) as u32;
+            let ir = (255.99 * r) as u8;
+            let ig = (255.99 * g) as u8;
+            let ib = (255.99 * b) as u8;
 
-            image.set_rgb(x, y, ir as u8, ig as u8, ib as u8);
+            image.set_rgb(x, y, Color::new(ir, ig, ib));
         }
     }
 }
