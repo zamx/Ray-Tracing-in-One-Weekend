@@ -1,30 +1,90 @@
 use std::fmt::Debug;
+use std::ops;
 
-#[derive(Eq, PartialEq, Clone, Debug)]
+#[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub struct Color {
-    pub r: u8,
-    pub g: u8,
-    pub b: u8,
+    data: [i32; 3]
 }
 
 impl Color {
-    pub fn new(r: u8, g: u8, b: u8) -> Color {
-        Color { r, g, b }
+    pub fn new(r: i32, g: i32, b: i32) -> Color {
+        let data = [r, g, b];
+        Color { data }
     }
 
     pub fn black() -> Color {
-        Color { r: 0, g: 0, b: 0 }
+        Color::new( 0, 0, 0 )
     }
 
     pub fn red() -> Color {
-        Color { r: 255, g: 0, b: 0 }
+        Color::new( 255, 0, 0 )
     }
 
     pub fn green() -> Color {
-        Color { r: 0, g: 255, b: 0 }
+        Color::new( 0, 255, 0 )
     }
 
     pub fn blue() -> Color {
-        Color { r: 0, g: 0, b: 255 }
+        Color::new(0, 0, 255 )
+    }
+
+    pub fn r(&self) -> i32 {
+        self.data[0]
+    }
+
+    pub fn g(&self) -> i32 {
+        self.data[1]
+    }
+
+    pub fn b(&self) -> i32 {
+        self.data[2]
+    }
+}
+
+impl ops::Mul<i32> for Color {
+    type Output = Color;
+
+    fn mul(self, other: i32) -> Color {
+        Color::new(self.r() * other, self.g() * other, self.b() * other)
+    }
+}
+
+impl ops::Mul<Color> for i32 {
+    type Output = Color;
+
+    fn mul(self, rhs: Color) -> Self::Output {
+        rhs * self
+    }
+}
+
+impl ops::Mul<f64> for Color {
+    type Output = Color;
+
+    fn mul(self, other: f64) -> Color  {
+        self * other as i32
+    }
+}
+
+impl ops::Mul<Color> for f64 {
+    type Output = Color;
+
+    fn mul(self, rhs: Color) -> Self::Output {
+        rhs * self
+    }
+}
+
+impl ops::MulAssign<f64> for Color {
+    fn mul_assign(&mut self, rhs: f64) {
+        self.data[0] = (self.data[0] as f64 * rhs) as i32;
+        self.data[1] = (self.data[1] as f64 * rhs) as i32;
+        self.data[2] = (self.data[2] as f64 * rhs) as i32;
+    }
+}
+
+impl ops::MulAssign<i32> for Color {
+    fn mul_assign(&mut self, rhs: i32) {
+        self.data[0] *= rhs;
+        self.data[1] *= rhs;
+        self.data[2] *= rhs;
     }
 }

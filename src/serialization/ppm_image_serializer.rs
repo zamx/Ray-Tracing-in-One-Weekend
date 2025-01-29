@@ -36,7 +36,7 @@ impl ImageSerializer for PPMImageSerializer {
             for x in 0..image.width
             {
                 let color = image.rgb_at(x, y);
-                let line = format!("{} {} {}\n", color.r, color.g, color.b);
+                let line = format!("{} {} {}\n", color.r(), color.g(), color.b());
 
                 match file.write_all(line.as_bytes()) {
                     Err(why) => panic!("couldn't write to {}: {}", display, why),

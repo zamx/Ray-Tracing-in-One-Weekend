@@ -16,9 +16,9 @@ fn fill_image(image: &mut image::Image)
             let g = y as f64 / (image.width - 1) as f64;
             let b = 0.0;
 
-            let ir = (255.99 * r) as u8;
-            let ig = (255.99 * g) as u8;
-            let ib = (255.99 * b) as u8;
+            let ir = (255.99 * r) as i32;
+            let ig = (255.99 * g) as i32;
+            let ib = (255.99 * b) as i32;
 
             image.set_rgb(x, y, Color::new(ir, ig, ib));
         }
