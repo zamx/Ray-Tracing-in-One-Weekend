@@ -1,4 +1,5 @@
 use std::ops;
+use std::ops::Div;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Vec3 {
@@ -45,6 +46,10 @@ pub fn cross(lhs: &Vec3, rhs: &Vec3) -> Vec3 {
         lhs.z() * rhs.x() - lhs.x() * rhs.z(),
         lhs.x() * rhs.y() - lhs.y() * rhs.x()
     )
+}
+
+pub fn unit_vector(v: &Vec3) -> Vec3 {
+    v / v.length()
 }
 
 impl ops::Index<usize> for Vec3 {
@@ -136,6 +141,14 @@ impl ops::Div<f64> for Vec3 {
 
     fn div(self, other: f64) -> Vec3 {
         Vec3::new(self.x() / other, self.y() / other, self.z() / other)
+    }
+}
+
+impl Div<f64> for &Vec3 {
+    type Output = Vec3;
+
+    fn div(self, rhs: f64) -> Self::Output {
+        *self / rhs
     }
 }
 

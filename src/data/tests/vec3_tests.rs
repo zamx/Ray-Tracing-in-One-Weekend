@@ -1,4 +1,4 @@
-use crate::data::vec3::{cross, dot, Vec3};
+use crate::data::vec3::{cross, dot, unit_vector, Vec3};
 use float_eq::assert_float_eq;
 
 #[test]
@@ -130,4 +130,15 @@ fn index_should_panic_test() {
     let vec1 = Vec3::new(1.0, 2.5, 4.7);
 
     vec1[3];
+}
+
+#[test]
+fn unit_vector_test() {
+    let vec1 = Vec3::new(1.0, 2.0, 1.0);
+    let result = unit_vector(&vec1);
+
+    assert_float_eq!(result.x(), 0.40824829046, r2nd <= 1e-10);
+    assert_float_eq!(result.y(), 0.81649658092, r2nd <= 1e-10);
+    assert_float_eq!(result.z(), 0.40824829046, r2nd <= 1e-10);
+    assert_float_eq!(result.length(), 1.0, r2nd <= 1e-10);
 }
