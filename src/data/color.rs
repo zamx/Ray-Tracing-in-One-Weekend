@@ -1,5 +1,6 @@
 use std::fmt::Debug;
 use std::ops;
+use std::ops::Add;
 
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
 pub struct Color {
@@ -15,6 +16,8 @@ impl Color {
     pub fn black() -> Color {
         Color::new( 0, 0, 0 )
     }
+
+    pub fn white() -> Color { Color::new(255, 255, 255) }
 
     pub fn red() -> Color {
         Color::new( 255, 0, 0 )
@@ -61,7 +64,7 @@ impl ops::Mul<f64> for Color {
     type Output = Color;
 
     fn mul(self, other: f64) -> Color  {
-        self * other as i32
+        Color::new( (self.data[0] as f64 * other) as i32, (self.data[1] as f64 * other) as i32, (self.data[2] as f64 * other) as i32  )
     }
 }
 
@@ -86,5 +89,13 @@ impl ops::MulAssign<i32> for Color {
         self.data[0] *= rhs;
         self.data[1] *= rhs;
         self.data[2] *= rhs;
+    }
+}
+
+impl Add for Color {
+    type Output = Color;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Color::new(self.data[0] + rhs.data[0], self.data[1] + rhs.data[1], self.data[2] + rhs.data[2] )
     }
 }

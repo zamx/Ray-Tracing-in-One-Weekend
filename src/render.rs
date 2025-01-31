@@ -1,10 +1,14 @@
 use crate::data::color::Color;
 use crate::data::image::Image;
 use crate::data::ray::Ray;
+use crate::data::vec3;
 use crate::data::vec3::Vec3;
 
-fn ray_color(_ray: &Ray) -> Color {
-    Color::black()
+fn ray_color(ray: &Ray) -> Color {
+    let unit_direction = vec3::unit_vector(ray.direction());
+    let a = 0.5 * (unit_direction.y() + 1.0);
+
+    (1.0 - a ) * Color::white() + a * Color::new( 127, 178, 255 )
 }
 
 pub fn render_image(image: &mut Image) {
