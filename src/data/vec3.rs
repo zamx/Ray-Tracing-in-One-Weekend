@@ -98,6 +98,23 @@ impl ops::Mul<Vec3> for f64 {
     }
 }
 
+impl ops::Mul<u32> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, other: u32) -> Vec3 {
+        let double = other as f64;
+        Vec3::new(self.x() * double, self.y() * double, self.z() * double)
+    }
+}
+
+impl ops::Mul<Vec3> for u32 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: Vec3) -> Self::Output {
+        rhs * self
+    }
+}
+
 impl ops::Mul<Vec3> for Vec3 {
     type Output = Vec3;
 
