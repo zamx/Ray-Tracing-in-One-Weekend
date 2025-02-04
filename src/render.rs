@@ -3,6 +3,7 @@ use crate::data::image::Image;
 use crate::data::ray::Ray;
 use crate::data::vec3;
 use crate::data::vec3::Vec3;
+use crate::visuals::scene::Scene;
 
 fn ray_color(ray: &Ray) -> Color {
     let unit_direction = vec3::unit_vector(ray.direction());
@@ -11,7 +12,7 @@ fn ray_color(ray: &Ray) -> Color {
     (1.0 - a ) * Color::white() + a * Color::new( 127, 178, 255 )
 }
 
-pub fn render_image(image: &mut Image) {
+pub fn render_scene(scene: &Scene, image: &mut Image) {
     // Camera
     let focal_length = 1.0;
     let viewport_height = 2.0;
@@ -37,9 +38,13 @@ pub fn render_image(image: &mut Image) {
             let pixel_center = pixel00_loc + x * pixel_delta_u + y * pixel_delta_v;
             let ray_direction = pixel_center - camera_center;
             let ray = Ray::new(camera_center, ray_direction);
-            let color = ray_color(&ray);
 
-            image.set_rgb(x, y, color);
+            let scene_color = scene.cast(&ray);
+
+            match scene_color {
+                Some(color) => image.set_rgb(x, y, color),
+                None => image.set_rgb(x, y, ray_color(&ray)),
+            }
         }
     }
 }
