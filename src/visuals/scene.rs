@@ -21,9 +21,11 @@ impl Scene {
 
     pub fn cast(&self, ray: &Ray) -> Option<Color> {
         for object in &self.objects {
-            let result = object.hit(ray);
-            if result.is_some() {
-                return result;
+            let hit = object.hit(ray, 0.0, f64::INFINITY);
+
+            match hit {
+                Some(hit) => return object.color_at(&hit),
+                _ => ()
             }
         }
 

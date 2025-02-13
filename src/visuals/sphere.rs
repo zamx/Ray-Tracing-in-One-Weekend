@@ -1,7 +1,9 @@
-use crate::data::vec3;
+use std::cmp::max;
+use crate::data::{color, vec3};
 use crate::data::vec3::Vec3;
 use crate::data::color::Color;
 use crate::data::ray::Ray;
+use crate::visuals::hit_record::HitRecord;
 use crate::visuals::ray_trace_object::RayTraceObject;
 
 pub struct Sphere {
@@ -28,16 +30,50 @@ impl Sphere {
     }
 }
 
-impl RayTraceObject for Sphere {
-    fn hit(&self, ray: &Ray) -> Option<Color> {
-        let oc = self.center - *ray.origin();
-        let a = vec3::dot(ray.direction(), ray.direction());
-        let b = 2.0 * vec3::dot(&oc, ray.direction());
-        let c = vec3::dot(&oc, &oc) - self.radius * self.radius;
-        let discriminant = b * b - 4.0 * a * c;
+fn unit_to_range(value: f64, min: f64, max: f64) -> f64 {
+    assert!(min <= max);
 
-        match discriminant >= 0.0 {
-            true => Some(self.color),
+    let range = max - min;
+
+    ((value * range) + range) / 2.0
+}
+
+impl RayTraceObject for Sphere {
+    fn hit(&self, ray: &Ray, ray_t_min: f64, ray_t_max: f64) -> Option<HitRecord> {
+        let oc = self.center - *ray.origin();
+        let a = ray.direction().squared_length();
+        let h = vec3::dot(ray.direction(), &oc);
+        let c = oc.squared_length() - self.radius * self.radius;
+        let discriminant = h * h - a * c;
+
+        if discriminant < 0.0 {
+            return None;
+        }
+
+        let sqrt_d = discriminant.sqrt();
+
+        let mut root = (h - sqrt_d) / a;
+        if root < ray_t_min || ray_t_max < root {
+            root = (h + sqrt_d) / a;
+            if root <= ray_t_min || ray_t_max > root {
+                return None;
+            }
+        }
+
+        let p = ray.point_at(root);
+        Some(HitRecord::new(root, p, (p - self.center) / self.radius))
+    }
+
+    fn color_at(&self, hit: &HitRecord) -> Option<Color> {
+        match hit.t > 0.0 {
+            true => {
+                let color = Color::new(
+                    unit_to_range(hit.normal.x(), 0.0, 255.0) as i32,
+                    unit_to_range(hit.normal.y(), 0.0, 255.0) as i32,
+                    unit_to_range(hit.normal.z(), 0.0, 255.0) as i32
+                );
+                Some(color)
+            },
             false => None
         }
     }
