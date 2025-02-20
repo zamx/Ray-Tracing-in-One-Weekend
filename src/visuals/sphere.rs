@@ -60,17 +60,16 @@ impl RayTraceObject for Sphere {
             }
         }
 
-        let p = ray.point_at(root);
-        Some(HitRecord::new(root, p, (p - self.center) / self.radius))
+        Some(HitRecord::new(root, ray, self))
     }
 
     fn color_at(&self, hit: &HitRecord) -> Option<Color> {
-        match hit.t > 0.0 {
+        match hit.t() > 0.0 {
             true => {
                 let color = Color::new(
-                    unit_to_range(hit.normal.x(), 0.0, 255.0) as i32,
-                    unit_to_range(hit.normal.y(), 0.0, 255.0) as i32,
-                    unit_to_range(hit.normal.z(), 0.0, 255.0) as i32
+                    unit_to_range(hit.normal().x(), 0.0, 255.0) as i32,
+                    unit_to_range(hit.normal().y(), 0.0, 255.0) as i32,
+                    unit_to_range(hit.normal().z(), 0.0, 255.0) as i32
                 );
                 Some(color)
             },
