@@ -29,7 +29,7 @@ impl Image {
         &self.data[index]
     }
 
-    fn get_index(&self, x: u32, y: u32) -> usize {
+    const fn get_index(&self, x: u32, y: u32) -> usize {
         (x + y * (self.width)) as usize
     }
 }

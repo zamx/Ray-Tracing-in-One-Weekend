@@ -19,11 +19,11 @@ impl HitRecord {
         HitRecord{ t, point, normal, front_face }
     }
 
-    pub fn t(&self) -> f64 {
+    pub const fn t(&self) -> f64 {
         self.t
     }
 
-    pub fn normal(&self) -> &Vec3 {
+    pub const fn normal(&self) -> &Vec3 {
         &self.normal
     }
 

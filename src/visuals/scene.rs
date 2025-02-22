@@ -8,11 +8,11 @@ pub struct Scene {
 }
 
 impl Scene {
-    pub fn new(objects: Vec<Box<dyn RayTraceObject>>) -> Scene {
+    pub const fn new(objects: Vec<Box<dyn RayTraceObject>>) -> Scene {
         Scene { objects }
     }
 
-    pub fn empty() -> Scene {
+    pub const fn empty() -> Scene {
         Scene { objects :  Vec::new() }
     }
 

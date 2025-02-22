@@ -8,38 +8,38 @@ pub struct Color {
 }
 
 impl Color {
-    pub fn new(r: i32, g: i32, b: i32) -> Color {
+    pub const fn new(r: i32, g: i32, b: i32) -> Color {
         let data = [r, g, b];
         Color { data }
     }
 
-    pub fn black() -> Color {
+    pub const fn black() -> Color {
         Color::new( 0, 0, 0 )
     }
 
-    pub fn white() -> Color { Color::new(255, 255, 255) }
+    pub const fn white() -> Color { Color::new(255, 255, 255) }
 
-    pub fn red() -> Color {
+    pub const fn red() -> Color {
         Color::new( 255, 0, 0 )
     }
 
-    pub fn green() -> Color {
+    pub const fn green() -> Color {
         Color::new( 0, 255, 0 )
     }
 
-    pub fn blue() -> Color {
+    pub const fn blue() -> Color {
         Color::new(0, 0, 255 )
     }
 
-    pub fn r(&self) -> i32 {
+    pub const fn r(&self) -> i32 {
         self.data[0]
     }
 
-    pub fn g(&self) -> i32 {
+    pub const fn g(&self) -> i32 {
         self.data[1]
     }
 
-    pub fn b(&self) -> i32 {
+    pub const fn b(&self) -> i32 {
         self.data[2]
     }
 }

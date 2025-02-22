@@ -14,19 +14,19 @@ pub struct Sphere {
 }
 
 impl Sphere {
-    pub fn new(center: Vec3, radius: f64, color: Color) -> Sphere {
+    pub const fn new(center: Vec3, radius: f64, color: Color) -> Sphere {
         Sphere {center, radius, color}
     }
 
-    pub fn center(&self) -> Vec3 {
+    pub const fn center(&self) -> Vec3 {
         self.center
     }
 
-    pub fn radius(&self) -> f64 {
+    pub const fn radius(&self) -> f64 {
         self.radius
     }
 
-    pub fn color(&self) -> Color {
+    pub const fn color(&self) -> Color {
         self.color
     }
 }

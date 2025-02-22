@@ -7,23 +7,23 @@ pub struct Vec3 {
 }
 
 impl Vec3 {
-    pub fn new(x: f64, y: f64, z: f64) -> Vec3 {
+    pub const fn new(x: f64, y: f64, z: f64) -> Vec3 {
         Vec3 {data: [x, y, z]}
     }
 
-    pub fn zero() -> Vec3 {
+    pub const fn zero() -> Vec3 {
         Vec3 {data: [0.0, 0.0, 0.0]}
     }
 
-    pub fn x(&self) -> f64 {
+    pub const fn x(&self) -> f64 {
         self.data[0]
     }
 
-    pub fn y(&self) -> f64 {
+    pub const fn y(&self) -> f64 {
         self.data[1]
     }
 
-    pub fn z(&self) -> f64 {
+    pub const fn z(&self) -> f64 {
         self.data[2]
     }
 
@@ -31,16 +31,16 @@ impl Vec3 {
        self.squared_length().sqrt()
     }
 
-    pub fn squared_length(&self) -> f64 {
+    pub const fn squared_length(&self) -> f64 {
         self.x() * self.x() + self.y() * self.y() + self.z() * self.z()
     }
 }
 
-pub fn dot(lhs: &Vec3, rhs: &Vec3) -> f64 {
+pub const fn dot(lhs: &Vec3, rhs: &Vec3) -> f64 {
     lhs.x() * rhs.x() + lhs.y() * rhs.y() + lhs.z() * rhs.z()
 }
 
-pub fn cross(lhs: &Vec3, rhs: &Vec3) -> Vec3 {
+pub const fn cross(lhs: &Vec3, rhs: &Vec3) -> Vec3 {
     Vec3::new(
         lhs.y() * rhs.z() - lhs.z() * rhs.y(),
         lhs.z() * rhs.x() - lhs.x() * rhs.z(),
