@@ -1,4 +1,5 @@
 use crate::data::color::Color;
+use crate::data::interval::Interval;
 use crate::data::ray::Ray;
 use crate::visuals::ray_trace_object::RayTraceObject;
 
@@ -20,8 +21,9 @@ impl Scene {
     }
 
     pub fn cast(&self, ray: &Ray) -> Option<Color> {
+        let interval = Interval::new(0.0, f64::INFINITY);
         for object in &self.objects {
-            let hit = object.hit(ray, 0.0, f64::INFINITY);
+            let hit = object.hit(ray, interval);
 
             match hit {
                 Some(hit) => return object.color_at(&hit),

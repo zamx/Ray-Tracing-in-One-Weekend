@@ -2,6 +2,7 @@ use std::cmp::max;
 use crate::data::{color, vec3};
 use crate::data::vec3::Vec3;
 use crate::data::color::Color;
+use crate::data::interval::Interval;
 use crate::data::ray::Ray;
 use crate::visuals::hit_record::HitRecord;
 use crate::visuals::ray_trace_object::RayTraceObject;
@@ -39,7 +40,7 @@ fn unit_to_range(value: f64, min: f64, max: f64) -> f64 {
 }
 
 impl RayTraceObject for Sphere {
-    fn hit(&self, ray: &Ray, ray_t_min: f64, ray_t_max: f64) -> Option<HitRecord> {
+    fn hit(&self, ray: &Ray, ray_t: Interval) -> Option<HitRecord> {
         let oc = self.center - *ray.origin();
         let a = ray.direction().squared_length();
         let h = vec3::dot(ray.direction(), &oc);
@@ -53,9 +54,9 @@ impl RayTraceObject for Sphere {
         let sqrt_d = discriminant.sqrt();
 
         let mut root = (h - sqrt_d) / a;
-        if root < ray_t_min || ray_t_max < root {
+        if !ray_t.surrounds(root) {
             root = (h + sqrt_d) / a;
-            if root <= ray_t_min || ray_t_max > root {
+            if !ray_t.surrounds(root) {
                 return None;
             }
         }
